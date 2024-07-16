@@ -929,7 +929,7 @@ This ```script``` performs the following tasks:
 
 - __Source:__
 
-_Alternative:_If the script fails to work.
+_Alternative:_ If the script fails to work.
 
 https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04
   
