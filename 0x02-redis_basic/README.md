@@ -76,6 +76,12 @@ Type-annotate `store` correctly. Remember that `data` can be a `str`, `bytes`, `
     b'hello'
     bob@dylan:~$
 
+__Repo:__
+
+    GitHub repository: alx-backend-storage
+    Directory: 0x02-redis_basic
+    File: exercise.py
+
 ## 1. Reading from Redis and recovering original type
 
 Redis only allows to store string, bytes and numbers (and lists thereof). Whatever you store as single elements, it will be returned as a byte string. Hence if you store `"a"` as a UTF-8 string, it will be returned as `b"a"` when retrieved from the server.
@@ -99,6 +105,12 @@ The following code should not raise:
     for value, fn in TEST_CASES.items():
         key = cache.store(value)
         assert cache.get(key, fn=fn) == value
+
+__Repo:__
+
+    GitHub repository: alx-backend-storage
+    Directory: 0x02-redis_basic
+    File: exercise.py
 
 ## 2. Incrementing values
 
@@ -137,6 +149,12 @@ Decorate `Cache.store` with `count_calls`.
     b'1'
     b'3'
     bob@dylan:~$
+
+__Repo:__
+
+    GitHub repository: alx-backend-storage
+    Directory: 0x02-redis_basic
+    File: exercise.py
 
 ## 3. Storing lists
 
@@ -185,6 +203,12 @@ Decorate `Cache.store` with `call_history.`
     outputs: [b'04f8dcaa-d354-4221-87f3-4923393a25ad', b'a160a8a8-06dc-4934-8e95-df0cb839644b', b'15a8fd87-1f55-4059-86aa-9d1a0d4f2aea']
     bob@dylan:~$
 
+__Repo:__
+
+    GitHub repository: alx-backend-storage
+    Directory: 0x02-redis_basic
+    File: exercise.py
+
 ## 4. Retrieving lists
 
 In this tasks, we will implement a `replay` function to display the history of calls of a particular function.
@@ -202,6 +226,12 @@ Use keys generated in previous tasks to generate the following output:
     Cache.store(*(42,)) -> 5e752f2b-ecd8-4925-a3ce-e2efdee08d20
 
 Tip: use `lrange` and `zip` to loop over inputs and outputs.
+
+__Repo:__
+
+    GitHub repository: alx-backend-storage
+    Directory: 0x02-redis_basic
+    File: exercise.py
 
 ## 5. Implementing an expiring web cache and tracker
 
