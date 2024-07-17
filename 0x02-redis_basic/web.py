@@ -1,47 +1,72 @@
 #!/usr/bin/env python3
-""" Redis Module:
 
-In this tasks, we will implement a get_page function
-(prototype: def get_page(url: str) -> str:). The core of
-the function is very simple. It uses the requests module
-to obtain the HTML content of a particular URL and returns it.
+"""
+Function uses the requests module to obtain the HTML content of a particular
+URL and returns it
+"""
 
-Start in a new file named web.py and do not reuse the code
-written in exercise.py.
-
-Inside get_page track how many times a particular URL was
-accessed in the key "count:{url}" and cache the result with
-an expiration time of 10 seconds.
-
-Tip: Use http://slowwly.robertomurray.co.uk to simulate
-a slow response and test your caching."""
-
-from functools import wraps
-import redis
 import requests
-from typing import Callable
+import redis
+from functools import wraps
 
-redis_ = redis.Redis()
 
+store = redis.Redis()
 
-def count_requests(method: Callable) -> Callable:
-    """ Decortator for counting """
+def count_url_usage(method):
+    """
+    Decorator function to count URL usage and cache the data
+
+    Function caches the result of the method for a given URL
+
+    Parameters
+        url: URL for which the result should be cached
+
+    Return
+        str: Cached HTML content for the given URL
+    """
+
     @wraps(method)
     def wrapper(url):
-        """ Wrapper for decorator """
-        redis_.incr(f"count:{url}")
-        cached_html = redis_.get(f"cached:{url}")
-        if cached_html:
-            return cached_html.decode('utf-8')
-        html = method(url)
-        redis_.setex(f"cached:{url}", 10, html)
-        return html
+        """
+        Wrapper function to cache the result of the method for a given URL
 
+        Parameters
+            url: URL for which the result should be cached
+
+        Return
+            str: Cached HTML content for the given URL
+        """
+
+        cached_key = f"cached:{url}"
+        cached_data = store.get(cached_key)
+
+        if cached_data:
+            return cached_data.decode("utf-8")  # type: ignore
+
+        count_key = f"count:{url}"
+        html = method(url)
+
+        store.incr(count_key)
+        store.set(cached_key, html)
+        store.expire(cached_key, 10)
+        return html
     return wrapper
 
 
-@count_requests
+@count_url_usage
 def get_page(url: str) -> str:
-    """ Obtain the HTML content of a  URL """
-    req = requests.get(url)
-    return req.text
+    """
+    Simply counts the number of times the function was accessed
+
+    Retrieves the content of the given URL and returns it as a string
+
+    Parameters
+        url: The URL to retrieve the content from
+
+    Return
+        str: The content of the URL
+    """
+
+    response = requests.get(url)
+    return response.text
+
