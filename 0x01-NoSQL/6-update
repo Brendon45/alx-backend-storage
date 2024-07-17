@@ -1,5 +1,16 @@
-// 6. Update: A script that adds a new attribute to a document in the collection school
-db.school.updateMany(
-  { name: "Holberton school" },
-  { $set: { address: "972 Mission street" } }
-)
+// Script that adds a new attribute to a document in the collection 'school'
+//	only document with `name="Holberton school"` (all of them)
+//	adds the attribute `address` with the value “972 Mission street”
+
+db.school.update(
+  {
+      name: "Holberton school"
+  },
+  {$set: {
+      address: "972 Mission street"
+      }
+},
+{
+  multi: true
+}
+);
