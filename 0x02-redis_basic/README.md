@@ -250,3 +250,47 @@ __Repo:__
     GitHub repository: alx-backend-storage
     Directory: 0x02-redis_basic
     File: web.py
+
+## Reference 📚
+
+__Debugging__
+
+1. __Check if Redis is Running:__
+
+Ensure that the Redis server is running on your machine. You can check this by running:
+
+    redis-server
+    
+If it's not running, start it with:
+
+    redis-server
+
+2. __Verify Redis Configuration__:
+
+Open your Redis configuration file, typically located at `/etc/redis/redis.conf`. Check if it's configured to bind to `localhost`. The line should look like this:
+
+    bind 127.0.0.1
+
+If it's commented out (`#` at the beginning of the line), uncomment it and restart Redis.
+
+3. __Check for Other Processes Using Port 6379:__
+   
+It's possible that another process is using the same port. You can check this using the following command:
+
+    sudo lsof -i :6379
+    
+If another process is using the port, you might need to stop that process or configure Redis to use a different port.
+
+4. __Check Network Configuration:__
+
+Ensure that there are no network issues preventing the connection. The error suggests that there might be an issue with the network configuration.
+
+5. Restart Redis:
+
+After making changes to the Redis configuration, restart the Redis server:
+
+    sudo service redis-server restart
+
+6. __Check Firewall Settings:__
+
+If you have a firewall enabled, ensure that it allows connections to port 6379.
